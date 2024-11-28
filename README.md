@@ -2,6 +2,18 @@
 
 This repository contains utilities to import/export to our publication management database.
 
+## Installation
+
+Before you can use the notebooks in this repository, please install requirements:
+
+```
+pip install -r requirements.txt
+```
+
+And also set these environment variables:
+* `PUMA_USERNAME`
+* `PUMA_API_KEY`
+
 ## License
 
 The code in this repository is licensed under [BSD-3](LICENSE)
