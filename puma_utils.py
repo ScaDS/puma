@@ -1,4 +1,39 @@
-def list_bib(search_string = None, owner_username=None, year=None, verbose=False):
+def list_bib(search_string=None, owner_username=None, year=None, verbose=False):
+    """
+    Fetches a list of bibliographic entries from the PUMA API based on the 
+    search criteria provided.
+
+    Parameters
+    ----------
+    search_string : str, optional
+        A term to search in the bibliography database. If provided, only entries 
+        matching the search term will be returned. Default is None.
+    owner_username : str, optional
+        The username of the owner whose bibliographic entries will be retrieved. 
+        If not provided, entries from all users will be considered. Default is None.
+    year : int or list of int, optional
+        The publication year(s) to filter the results. If a single integer is provided, 
+        only entries from that year will be returned. If a list or a tuple is provided,
+        entries from the specified years (or year range) will be returned. Default is None.
+    verbose : bool, optional
+        If True, the title of each returned entry will be printed. Default is False.
+
+    Returns
+    -------
+    list
+        A list of bibliographic entries in BibTeX format that match the search criteria.
+        If no entries match, an empty list is returned.
+
+    Notes
+    -----
+    Environment variables `PUMA_USERNAME` and `PUMA_API_KEY` must be set for 
+    authentication.
+
+    Raises
+    ------
+    requests.exceptions.RequestException
+        If there is a problem with the network connection.
+    """
     import requests
     import base64
     import os
@@ -13,7 +48,7 @@ def list_bib(search_string = None, owner_username=None, year=None, verbose=False
     base64_auth = base64.b64encode(auth_bytes).decode('ascii')
     headers = {'Authorization': f'Basic {base64_auth}'}
     
-    # Get all posts of a given user
+    # Construct the API URL with the required parameters
     url = f"https://puma.scadsai.uni-leipzig.de/api/posts?resourcetype=bibtex&format=json&end=2000"
     if search_string is not None:
         url += "&search=" + search_string
@@ -60,6 +95,5 @@ def list_bib(search_string = None, owner_username=None, year=None, verbose=False
             bibtex_entries.append(bibtex)
         return bibtex_entries
     else:
+        # Handle errors by printing the response text
         print(response.text)
-
-    
